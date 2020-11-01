@@ -1,0 +1,20 @@
+#!/bin/sh
+# Bash script to send text messages to a device paired and reachable via kdeconnect
+# Example usage:
+# sendTo 12025550111 "Hello, World"
+
+#Arguments
+NUM=$1
+MSG=$2
+
+#Extract device token from first paired and reachable device
+get_device () {
+ kdeconnect-cli -a | head -n 1| cut -d ":" -f 2 | cut -d "(" -f 1
+}
+
+#Set Device
+DEV=$(get_device)
+
+#Execute
+kdeconnect-cli -d $DEV --destination $NUM --send-sms "$MSG"
+
